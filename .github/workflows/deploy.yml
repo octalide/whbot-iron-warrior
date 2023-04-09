@@ -34,6 +34,6 @@ jobs:
         key: ${{ secrets.S02_SSH_KEY }}
         script: |
           docker pull octalide/whbot-iron-warrior:latest
-          docker stop your-container-name || true
-          docker rm your-container-name || true
+          docker stop whbot-iron-warrior || true
+          docker rm whbot-iron-warrior || true
           docker run -d --name whbot-iron-warrior -e DSC_TOKEN=${{ secrets.DSC_TOKEN }} octalide/whbot-iron-warrior:latest
