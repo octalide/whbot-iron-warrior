@@ -1,0 +1,39 @@
+name: Deploy to S02
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: octalide/whbot-iron-warrior:latest
+
+    - name: Deploy Docker container to S02
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.S02_HOST }}
+        username: ${{ secrets.S02_USERNAME }}
+        key: ${{ secrets.S02_SSH_KEY }}
+        script: |
+          docker pull octalide/whbot-iron-warrior:latest
+          docker stop your-container-name || true
+          docker rm your-container-name || true
+          docker run -d --name whbot-iron-warrior -e DSC_TOKEN=${{ secrets.DSC_TOKEN }} octalide/whbot-iron-warrior:latest
