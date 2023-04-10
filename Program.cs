@@ -33,6 +33,7 @@ namespace WHBOT.IronWarrior
         {
             if (message.Content == "ping")
             {
+                Console.WriteLine($"PONG from {message.Author.Username}");
                 await message.Channel.SendMessageAsync("pong");
             }
         }
