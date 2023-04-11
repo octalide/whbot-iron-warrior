@@ -19,7 +19,7 @@ namespace WHBOT.IronWarrior
         {
             _client = new DiscordSocketClient();
             _client.Log += Log;
-            _client.MessageReceived += MessageReceived;
+            _client.MessageReceived += OnMessageReceived;
 
             var token = Environment.GetEnvironmentVariable("DSC_TOKEN");
 
@@ -29,9 +29,11 @@ namespace WHBOT.IronWarrior
             await Task.Delay(-1);
         }
 
-        private async Task MessageReceived(SocketMessage message)
+        private async Task OnMessageReceived(SocketMessage message)
         {
-            if (message.Content == "ping")
+            Console.WriteLine("got message: " + message.Content);
+
+            if (message.Content.Contains("ping"))
             {
                 Console.WriteLine($"PONG from {message.Author.Username}");
                 await message.Channel.SendMessageAsync("pong");
