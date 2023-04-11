@@ -17,7 +17,12 @@ namespace WHBOT.IronWarrior
 
         public async Task MainAsync()
         {
-            _client = new DiscordSocketClient();
+            var config = new DiscordSocketConfig
+            {
+                GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent | GatewayIntents.GuildMessages
+            };
+
+            _client = new DiscordSocketClient(config);
             _client.Log += Log;
             _client.MessageReceived += OnMessageReceived;
 
