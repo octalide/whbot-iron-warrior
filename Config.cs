@@ -50,7 +50,7 @@ namespace WHBOT.IronWarrior
             if (!File.Exists(path))
             {
                 Console.WriteLine("config.json not found");
-                File.Create(path);
+                File.Create(path).Close();
 
                 if (defaultConfig == null)
                 {
