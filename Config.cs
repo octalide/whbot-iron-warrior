@@ -47,13 +47,14 @@ namespace WHBOT.IronWarrior
                 Console.WriteLine("config.json not found");
                 File.Create(path);
 
-                if (defaultConfig != null)
+                if (defaultConfig == null)
                 {
-                    defaultConfig.Save(path);
-                } else {
                     defaultConfig = new Config();
                     defaultConfig.Set("ping", "pong");
                 }
+
+                Console.WriteLine("saving default config.json");
+                defaultConfig.Save(path);
 
                 return defaultConfig;
             }

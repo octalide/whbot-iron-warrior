@@ -20,7 +20,7 @@ namespace WHBOT.IronWarrior
             try {
                 _config = Config.Load("config.json");
             } catch (Exception e) {
-                Console.WriteLine(e.Message);
+                Console.WriteLine($"ERR: {e.Message}");
                 return;
             }
 
