@@ -18,7 +18,7 @@ namespace WHBOT.IronWarrior
         public async Task MainAsync()
         {
             try {
-                _config = Config.Load("config.json");
+                _config = Config.Load("/bot/iron-warrior/config.json");
             } catch (Exception e) {
                 Console.WriteLine($"ERR: {e.Message}");
                 return;
