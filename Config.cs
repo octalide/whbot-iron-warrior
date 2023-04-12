@@ -65,17 +65,11 @@ namespace WHBOT.IronWarrior
                 return defaultConfig;
             }
 
-            try
-            {
-                var json = File.ReadAllText(path);
-                var config = JsonConvert.DeserializeObject<Config>(json);
-                config!._path = path;
-                return config!;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Error loading config.json: " + e.Message);
-            }
+            Console.WriteLine("loading config.json");
+            var json = File.ReadAllText(path);
+            var config = JsonConvert.DeserializeObject<Config>(json);
+            config!._path = path;
+            return config!;
         }
 
         public void Save()

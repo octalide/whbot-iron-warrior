@@ -5,6 +5,8 @@ namespace WHBOT.IronWarrior
 {
     class Program
     {
+        private const string CONFIG_PATH = "/bot/iron-warrior/config.json";
+
         public Config? _config;
 
         public static Task Main(string[] args) =>  new Program().MainAsync();
@@ -18,9 +20,10 @@ namespace WHBOT.IronWarrior
         public async Task MainAsync()
         {
             try {
-                _config = Config.Load("/bot/iron-warrior/config.json");
+                _config = Config.Load(CONFIG_PATH);
             } catch (Exception e) {
                 Console.WriteLine($"ERR: {e.Message}");
+                Console.WriteLine(e.StackTrace);
                 return;
             }
 
