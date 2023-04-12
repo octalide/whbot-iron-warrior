@@ -67,14 +67,15 @@ namespace WHBOT.IronWarrior
 
             Console.WriteLine("loading config.json");
             var json = File.ReadAllText(path);
-            var config = JsonConvert.DeserializeObject<Config>(json);
-            config!._path = path;
-            return config!;
+            var pairs = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(json);
+            var config = new Config(path);
+            config.Pairs = pairs;
+            return config;
         }
 
         public void Save()
         {
-            var json = JsonConvert.SerializeObject(this, Formatting.Indented);
+            var json = JsonConvert.SerializeObject(this.Pairs, Formatting.Indented);
             File.WriteAllText(this._path, json);
         }
     }
