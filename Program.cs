@@ -5,9 +5,9 @@ namespace WHBOT.IronWarrior
 {
     class Program
     {
-        private DiscordSocketClient _client;
+        public Config? _config;
 
-        public static Task Main(string[] args) => new Program().MainAsync();
+        public static Task Main(string[] args) =>  new Program().MainAsync();
 
         private Task Log(LogMessage msg)
         {
@@ -17,12 +17,18 @@ namespace WHBOT.IronWarrior
 
         public async Task MainAsync()
         {
-            var config = new DiscordSocketConfig
+            try {
+                _config = Config.Load("config.json");
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);
+                return;
+            }
+
+            var _client = new DiscordSocketClient(new DiscordSocketConfig
             {
                 GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent | GatewayIntents.GuildMessages
-            };
+            });
 
-            _client = new DiscordSocketClient(config);
             _client.Log += Log;
             _client.MessageReceived += OnMessageReceived;
 
@@ -36,12 +42,14 @@ namespace WHBOT.IronWarrior
 
         private async Task OnMessageReceived(SocketMessage message)
         {
-            Console.WriteLine("got message: " + message.Content);
-
-            if (message.Content.Contains("ping"))
+            foreach (var pair in _config!.Pairs!)
             {
-                Console.WriteLine($"PONG from {message.Author.Username}");
-                await message.Channel.SendMessageAsync("pong");
+                if (message.Content.ToLower().Contains(pair.Key.ToLower()))
+                {
+                    Console.WriteLine($"Responding to {message.Author.Username}. Prompt match: {pair.Key}");
+                    var response = pair.Value[new Random().Next(0, pair.Value.Length)];
+                    await message.Channel.SendMessageAsync(response);
+                }
             }
         }
     }

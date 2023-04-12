@@ -36,4 +36,4 @@ jobs:
           docker pull octalide/whbot-iron-warrior:latest
           docker stop whbot-iron-warrior || true
           docker rm whbot-iron-warrior || true
-          docker run -d --name whbot-iron-warrior -e DSC_TOKEN=${{ secrets.DSC_TOKEN }} octalide/whbot-iron-warrior:latest
+          docker run -d --name whbot-iron-warrior -e DSC_TOKEN=${{ secrets.DSC_TOKEN }} octalide/whbot-iron-warrior:latest -v /bot/iron-warrior:/bot/iron-warrior
